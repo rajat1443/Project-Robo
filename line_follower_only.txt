@@ -1,0 +1,99 @@
+int IR_sensor1=8;
+int IR_sensor2=9;
+
+int mot1=3;
+int mot2=4;
+int mot3=5;
+int mot4=6;
+
+int time_=0;
+int distance=0;
+int low_pin=2;
+int echo_pin=7;
+int trig_pin=10;
+int high_pin=11;
+
+
+int val1=0;
+int val2=0;
+
+
+void setup() {
+  
+  // initialize digital pin LED_BUILTIN as an output.
+  
+  pinMode(LED_BUILTIN, OUTPUT);
+  
+  pinMode(IR_sensor1,INPUT);
+  pinMode(IR_sensor2,INPUT);
+  
+  pinMode(mot1,OUTPUT);
+  pinMode(mot2,OUTPUT);
+
+  pinMode(low_pin,INPUT);
+  digitalWrite(low_pin,LOW);
+
+  pinMode(echo_pin,INPUT);
+  pinMode(trig_pin,OUTPUT);
+  
+  pinMode(high_pin,OUTPUT);
+  digitalWrite(high_pin,HIGH);
+  
+  Serial.begin(9600);
+}
+
+// the loop function runs over and over again forever
+void loop() {
+
+  digitalWrite(LED_BUILTIN, HIGH);// turn the LED on (HIGH is the voltage level)
+  
+  val1=digitalRead(IR_sensor1);
+  val2=digitalRead(IR_sensor2);
+  
+  Serial.println("IRsensor1:");
+  Serial.println(val1);
+  Serial.println("IRsensor2:");
+  Serial.println(val2);
+  
+
+  
+  digitalWrite(trig_pin,HIGH);
+  delayMicroseconds(10);
+  digitalWrite(trig_pin,LOW);
+
+  time_=pulseIn(echo_pin,HIGH);
+
+  distance= (time_*0.034)/2;
+
+  
+  
+  if(val1==0 && val2==0){
+  digitalWrite(mot1,HIGH);
+  digitalWrite(mot2,HIGH);
+  digitalWrite(mot3,HIGH);
+  digitalWrite(mot4,HIGH);
+   }
+  else if(val1==0 && val2==1){
+    
+    digitalWrite(mot1,HIGH);
+    digitalWrite(mot2,HIGH);
+  digitalWrite(mot3,LOW);
+  digitalWrite(mot4,LOW);
+    }
+    
+  else if(val1==1 && val2==0){
+    digitalWrite(mot1,LOW);
+    digitalWrite(mot2,LOW);
+  digitalWrite(mot3,HIGH);
+  digitalWrite(mot4,HIGH);
+    }
+    
+  else if(val1==1 && val2==1){
+    digitalWrite(mot1,LOW);
+    digitalWrite(mot2,LOW);
+  digitalWrite(mot3,LOW);
+  digitalWrite(mot4,LOW);
+    }
+  
+    
+}
